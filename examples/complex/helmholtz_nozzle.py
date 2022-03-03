@@ -1,3 +1,7 @@
+import sys
+
+sys.path.append("../../")
+
 from classy_blocks.classes.mesh import Mesh
 from classy_blocks.classes.operations import Face
 from classy_blocks.classes.shapes import Cylinder, Frustum, RevolvedRing
@@ -91,3 +95,4 @@ def get_mesh():
 
     return mesh
     
+get_mesh().write("../../case/system/blockMeshDict")

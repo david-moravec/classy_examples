@@ -1,4 +1,5 @@
 import os
+import sys
 
 from classy_blocks.classes.mesh import Mesh
 from classy_blocks.classes.shapes import Frustum, Cylinder
@@ -11,7 +12,7 @@ class nozzleFda:
         self.mesh = Mesh()
 
         self.radius = [6, 2]
-        self.z = [0, 50, 72.685, 112.2685, 200]
+        self.z = [0, 100, 72.685, 112.2685, 212.00]
         z = self.z
         radius = self.radius
 
@@ -67,4 +68,4 @@ class nozzleFda:
 
 nozzleMesh = nozzleFda()
 nozzleMesh.mesh.set_default_patch('walls', 'wall')
-nozzleMesh.mesh.write("../david-7/run/doktorat/nozzle-fda-mesh/system/blockMeshDict")
+nozzleMesh.mesh.write("./system/blockMeshDict")
