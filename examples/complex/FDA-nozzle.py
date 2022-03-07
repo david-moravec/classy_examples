@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append("../../")
+sys.path.append("/local/home/moravec/bin/classy_examples")
 
 from classy_blocks.classes.mesh import Mesh
 from classy_blocks.classes.operations import Face
