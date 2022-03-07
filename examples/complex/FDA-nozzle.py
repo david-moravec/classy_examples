@@ -99,4 +99,4 @@ def get_mesh():
 mesh = get_mesh()
 
 mesh.set_default_patch('outlet', 'patch')
-mesh.write("../../case/system/blockMeshDict")
+mesh.write("./system/blockMeshDict")
