@@ -27,7 +27,7 @@ def get_mesh():
 
 
     # number of cells:
-    n_cells_radial = 8
+    n_cells_radial = 10
     n_cells_tangential = 12
     cell_ratio = 4 # ratio between axial (flow-aligned) and radial cell size
     outer_cell_size = (2*r_nozzle)/(3*n_cells_radial)
@@ -85,9 +85,9 @@ def get_mesh():
     ])
     chamber_outer = RevolvedRing([x_start, 0, 0], [x_end, 0, 0], ring_face)
     chamber_outer.chop_radial(length_ratio=0.5, start_size=outer_cell_size, c2c_expansion=c2c_expansion)
-    chamber_outer.chop_radial(length_ratio=0.5, end_size=outer_cell_size, c2c_expansion=1/c2c_expansion)
+    #chamber_outer.chop_radial(length_ratio=0.5, end_size=outer_cell_size, c2c_expansion=1/c2c_expansion)
     chamber_outer.set_bottom_patch('wall')
-    chamber_outer.set_top_patch('wall')
+    #chamber_outer.set_top_patch('wall')
     chamber_outer.set_outer_patch('wall')
     #outlet.set_top_patch('outlet-outer')
     mesh.add(chamber_outer)
