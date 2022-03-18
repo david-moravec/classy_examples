@@ -27,11 +27,12 @@ def get_mesh():
 
 
     # number of cells:
-    n_cells_radial = 10
+    n_cells_radial = 5
     outer_cell_size = 3e-4
-    c2c_expansion = 1.03
+    c2c_expansion = 1.05
+    c2c_expansion_ax = 1.01
     cell_homogenity_factor = 3
-    cell_ratio = 5 # ratio between axial (flow-aligned) and radial cell size
+    cell_ratio = 3 # ratio between axial (flow-aligned) and radial cell size
 
     inner_cell_size = outer_cell_size * c2c_expansion**n_cells_radial
     axial_cell_size = outer_cell_size*cell_ratio
@@ -43,11 +44,11 @@ def get_mesh():
     x_end = l_inlet
     inlet = Cylinder([x_start, 0, 0], [x_end, 0, 0], [0, 0, r_inlet])
     inlet.chop_radial(start_size=outer_cell_size, end_size=inner_cell_size)
-    inlet.chop_axial(start_size=axial_cell_size, end_size=outer_cell_size)
+    inlet.chop_axial(c2c_expansion=1/c2c_expansion_ax, end_size=outer_cell_size)
     inlet.chop_tangential(start_size=inner_cell_size)
 
     inlet.set_bottom_patch('inlet')
-    inlet.set_outer_patch('wall')
+    inlet.set_outer_patch('walls')
     mesh.add(inlet)
 
     # nozzle
@@ -57,7 +58,7 @@ def get_mesh():
     # the interesting part is the sharp edge: make cells denser here;
     # since we need the requested cell size at the end of the block, just use a negative size
     nozzle.chop_axial(start_size=outer_cell_size, end_size=outer_cell_size)
-    nozzle.set_outer_patch('wall')
+    nozzle.set_outer_patch('walls')
     mesh.add(nozzle)
 
     # middle part 
@@ -66,7 +67,7 @@ def get_mesh():
     outlet = Cylinder([x_start, 0, 0], [x_end, 0, 0], [x_start, 0, r_nozzle])
     outlet.chop_axial(start_size=outer_cell_size, end_size=outer_cell_size/cell_homogenity_factor) 
     #outlet.chop_axial(length_ratio = 0.5, end_size=outer_cell_size/cell_homogenity_factor, c2c_expansion=1/1.01)
-    outlet.set_outer_patch('wall')
+    outlet.set_outer_patch('walls')
     mesh.add(outlet)
 
     # chamber: inner cylinder
@@ -74,7 +75,7 @@ def get_mesh():
     x_end = x_end + l_chamber_inner
     chamber_inner = Cylinder([x_start, 0, 0], [x_end, 0, 0], [x_start, 0, r_nozzle])
     # create smaller cells at inlet and outlet but leave them bigger in the middle;
-    chamber_inner.chop_axial(start_size=outer_cell_size/cell_homogenity_factor, end_size=axial_cell_size)
+    chamber_inner.chop_axial(start_size=outer_cell_size/cell_homogenity_factor, c2c_expansion=c2c_expansion_ax)
     #chamber_inner.chop_axial(length_ratio=0.5, start_size=axial_cell_size, end_size=outer_cell_size)
     #outlet.set_top_patch('outlet-iner')
     mesh.add(chamber_inner)
@@ -89,9 +90,9 @@ def get_mesh():
     chamber_outer = RevolvedRing([x_start, 0, 0], [x_end, 0, 0], ring_face)
     chamber_outer.chop_radial(length_ratio=0.5, start_size=outer_cell_size/cell_homogenity_factor, c2c_expansion=c2c_expansion)
     chamber_outer.chop_radial(length_ratio=0.5, end_size=outer_cell_size/cell_homogenity_factor, c2c_expansion=1/c2c_expansion)
-    chamber_outer.set_bottom_patch('wall')
+    chamber_outer.set_bottom_patch('walls')
     #chamber_outer.set_top_patch('wall')
-    chamber_outer.set_outer_patch('wall')
+    chamber_outer.set_outer_patch('walls')
     #outlet.set_top_patch('outlet-outer')
     mesh.add(chamber_outer)
 
