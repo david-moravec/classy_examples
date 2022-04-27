@@ -12,8 +12,9 @@ def get_mesh():
 
     # geometry data (all dimensions in meters):
     # inlet pipe
+    l_inlet_sudden_expansion = 150e-3
     r_inlet = 6e-3
-    l_inlet = 100e-3
+    #l_inlet = 88e-3 - l_nozzle - l_middle
 
     # nozzle
     r_nozzle = 2e-3
@@ -22,13 +23,15 @@ def get_mesh():
     #middle cylinder
     l_middle = 40e-3
 
+    #inlet
+    l_inlet = l_inlet_sudden_expansion - l_nozzle - l_middle
     # outlet cylinder
     l_chamber_inner = 100e-3
 
 
     # number of cells:
     n_cells_radial = 5
-    outer_cell_size = 3e-4
+    outer_cell_size = 5e-4
     c2c_expansion = 1.05
     c2c_expansion_ax = 1.01
     cell_homogenity_factor = 3
@@ -98,9 +101,11 @@ def get_mesh():
 
 
 
-    return mesh
+    return mesh, l_inlet
     
-mesh = get_mesh()
+mesh, l_inlet = get_mesh()
 
 mesh.set_default_patch('outlet', 'patch')
 mesh.write("./system/blockMeshDict")
+
+sys.exit(l_inlet_sudden_expansion)
